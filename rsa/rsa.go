@@ -89,7 +89,12 @@ func LoadPublicKeyFromFile(filePath string) (*rrsa.PublicKey, error) {
 		return nil, err
 	}
 
-	return pubKeyInterface.(*rsa.PublicKey), nil
+	pubKey, ok := pubKeyInterface.(*rsa.PublicKey)
+	if !ok {
+		return nil, errors.New("the public key is not rsa.PublicKey")
+	}
+
+	return pubKey, nil
 }
 
 // RsaEncrypt encrypts clear text by using rsa public key, and returns the cipher text
