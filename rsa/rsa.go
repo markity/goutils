@@ -13,6 +13,7 @@ import (
 	"os"
 )
 
+// GenerateRSAKeyToFile generates RSA private key and public key, and writes them into file
 func GenerateRSAKeyToFile(bits int, privateKeyPath string, publicKeyPath string) (err error) {
 	pri, err := rsa.GenerateKey(rand.Reader, bits)
 	if err != nil {
