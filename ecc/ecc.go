@@ -10,45 +10,51 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/big"
-	"os"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/ecies"
 )
 
+type curve struct {
+	c elliptic.Curve
+}
+
+func CurveP256() *curve {
+	return &curve{elliptic.P256()}
+}
+
+func CurveS256() *curve {
+	return &curve{crypto.S256()}
+}
+
 // GenerateECCKeyToFile generates ECC private key and public key, and writes them into file
-func GenerateECCKeyToFile(curve elliptic.Curve, privateKeyPath string, publicKeyPath string) error {
-	pri, err := ecdsa.GenerateKey(curve, rand.Reader)
+func GenerateECCKeyToFile(cur *curve, privateKeyPath string, publicKeyPath string) error {
+	pri, err := ecdsa.GenerateKey(cur.c, rand.Reader)
 	if err != nil {
 		return errors.New(fmt.Sprintf("failed to generate private key: %v", err))
 	}
-	priFile, err := os.Create(privateKeyPath)
+	priBytes, err := toolFromECDSAPri(pri)
 	if err != nil {
-		return errors.New(fmt.Sprintf("failed to create file for private key: %v", err))
+		return errors.New(fmt.Sprintf("failed to marshal private key into bytes: %v", err))
 	}
-	if _, err := priFile.Write([]byte(hex.EncodeToString(toolFromECDSAPri(pri)))); err != nil {
+	if err := ioutil.WriteFile(privateKeyPath, []byte(hex.EncodeToString(priBytes)), 0600); err != nil {
 		return errors.New(fmt.Sprintf("failed to write private key into file: %v", err))
-	}
-	if err := priFile.Close(); err != nil {
-		return errors.New(fmt.Sprintf("failed to close private key file: %v", err))
 	}
 
 	pub := &pri.PublicKey
-	pubFile, err := os.Create(publicKeyPath)
+	pubBytes, err := toolFromECDSAPub(pub)
 	if err != nil {
-		return errors.New(fmt.Sprintf("failed to create file for public key: %v", err))
+		return errors.New(fmt.Sprintf("failed to marshal public key into bytes: %v", err))
 	}
-	if _, err := pubFile.Write([]byte(hex.EncodeToString(toolFromECDSAPub(pub)))); err != nil {
+	if err := ioutil.WriteFile(publicKeyPath, []byte(hex.EncodeToString(pubBytes)), 0600); err != nil {
 		return errors.New(fmt.Sprintf("failed to write public key into file: %v", err))
-	}
-	if err := pubFile.Close(); err != nil {
-		return errors.New(fmt.Sprintf("failed to close public key file: %v", err))
 	}
 
 	return nil
 }
 
 // LoadECCPrivateKeyFromFile loads ECC private key from file
-func LoadECCPrivateKeyFromFile(curve elliptic.Curve, filePath string) (*ecdsa.PrivateKey, error) {
+func LoadECCPrivateKeyFromFile(cur *curve, filePath string) (*ecdsa.PrivateKey, error) {
 	priBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
@@ -58,11 +64,11 @@ func LoadECCPrivateKeyFromFile(curve elliptic.Curve, filePath string) (*ecdsa.Pr
 		return nil, err
 	}
 
-	return toolToECDSAPri(curve, priBytes)
+	return toolToECDSAPri(cur.c, priBytes)
 }
 
 // LoadECCPublicKeyFromFile Loads ECC public key from file
-func LoadECCPublicKeyFromFile(curve elliptic.Curve, filePath string) (*ecdsa.PublicKey, error) {
+func LoadECCPublicKeyFromFile(cur *curve, filePath string) (*ecdsa.PublicKey, error) {
 	pubBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
@@ -72,7 +78,7 @@ func LoadECCPublicKeyFromFile(curve elliptic.Curve, filePath string) (*ecdsa.Pub
 		return nil, err
 	}
 
-	return toolToECDSAPub(curve, pubBytes)
+	return toolToECDSAPub(cur.c, pubBytes)
 }
 
 // ECCEncrypt encrypts clear text by using public key, and returns the cipher text
