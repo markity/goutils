@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/markity/goutils/ecc"
+	"github.com/markity/goutils/crypto/ecc"
 )
 
 func TestP256(t *testing.T) {

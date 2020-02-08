@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/markity/goutils/rsa"
+	"github.com/markity/goutils/crypto/rsa"
 )
 
 func TestAll(t *testing.T) {
