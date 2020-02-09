@@ -27,8 +27,8 @@ func CurveS256() *curve {
 	return &curve{crypto.S256()}
 }
 
-// GenerateECCKeyToFile generates ECC private key and public key, and writes them into file
-func GenerateECCKeyToFile(cur *curve, privateKeyPath string, publicKeyPath string) error {
+// GenerateECDSAKeyToFile generates ECC private key and public key, and writes them into file
+func GenerateECDSAKeyToFile(cur *curve, privateKeyPath string, publicKeyPath string) error {
 	pri, err := ecdsa.GenerateKey(cur.c, rand.Reader)
 	if err != nil {
 		return errors.New(fmt.Sprintf("failed to generate private key: %v", err))
@@ -53,8 +53,8 @@ func GenerateECCKeyToFile(cur *curve, privateKeyPath string, publicKeyPath strin
 	return nil
 }
 
-// LoadECCPrivateKeyFromFile loads ECC private key from file
-func LoadECCPrivateKeyFromFile(cur *curve, filePath string) (*ecdsa.PrivateKey, error) {
+// LoadECDSAPrivateKeyFromFile loads ECC private key from file
+func LoadECDSAPrivateKeyFromFile(cur *curve, filePath string) (*ecdsa.PrivateKey, error) {
 	priBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
@@ -67,8 +67,8 @@ func LoadECCPrivateKeyFromFile(cur *curve, filePath string) (*ecdsa.PrivateKey, 
 	return toolToECDSAPri(cur.c, priBytes)
 }
 
-// LoadECCPublicKeyFromFile Loads ECC public key from file
-func LoadECCPublicKeyFromFile(cur *curve, filePath string) (*ecdsa.PublicKey, error) {
+// LoadECDSAPublicKeyFromFile Loads ECC public key from file
+func LoadECDSAPublicKeyFromFile(cur *curve, filePath string) (*ecdsa.PublicKey, error) {
 	pubBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err

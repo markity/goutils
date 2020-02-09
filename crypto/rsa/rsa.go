@@ -30,6 +30,11 @@ func GenerateRSAKeyToFile(bits int, privateKeyPath string, publicKeyPath string)
 		err = errors.New(fmt.Sprintf("failed to create file for private key: %v", err))
 		return
 	}
+	defer func() {
+		if err == nil {
+			err = priFile.Close()
+		}
+	}()
 	if err = pem.Encode(priFile, priBlock); err != nil {
 		err = errors.New(fmt.Sprintf("failed to encode private key into file: %v", err))
 		return
@@ -50,6 +55,11 @@ func GenerateRSAKeyToFile(bits int, privateKeyPath string, publicKeyPath string)
 		err = errors.New(fmt.Sprintf("failed to create file for public key: %v", err))
 		return
 	}
+	defer func() {
+		if err == nil {
+			err = pubFile.Close()
+		}
+	}()
 	if err = pem.Encode(pubFile, pubBlock); err != nil {
 		err = errors.New(fmt.Sprintf("failed to encode public key into file: %v", err))
 		return

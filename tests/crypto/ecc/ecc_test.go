@@ -10,16 +10,16 @@ import (
 
 func TestP256(t *testing.T) {
 	curve := ecc.CurveP256()
-	if err := ecc.GenerateECCKeyToFile(curve, "private", "public"); err != nil {
+	if err := ecc.GenerateECDSAKeyToFile(curve, "private", "public"); err != nil {
 		t.Fatal(err)
 	}
 
-	ecdsaPri, err := ecc.LoadECCPrivateKeyFromFile(curve, "private")
+	ecdsaPri, err := ecc.LoadECDSAPrivateKeyFromFile(curve, "private")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	ecdsaPub, err := ecc.LoadECCPublicKeyFromFile(curve, "public")
+	ecdsaPub, err := ecc.LoadECDSAPublicKeyFromFile(curve, "public")
 
 	clearText := []byte("神秘的密文, I am secret")
 
@@ -45,16 +45,16 @@ func TestP256(t *testing.T) {
 
 func TestS256(t *testing.T) {
 	curve := ecc.CurveS256()
-	if err := ecc.GenerateECCKeyToFile(curve, "private", "public"); err != nil {
+	if err := ecc.GenerateECDSAKeyToFile(curve, "private", "public"); err != nil {
 		t.Fatal(err)
 	}
 
-	ecdsaPri, err := ecc.LoadECCPrivateKeyFromFile(curve, "private")
+	ecdsaPri, err := ecc.LoadECDSAPrivateKeyFromFile(curve, "private")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	ecdsaPub, err := ecc.LoadECCPublicKeyFromFile(curve, "public")
+	ecdsaPub, err := ecc.LoadECDSAPublicKeyFromFile(curve, "public")
 
 	clearText := []byte("神秘的密文, I am secret")
 
