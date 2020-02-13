@@ -47,7 +47,7 @@ func TestB(t *testing.T) {
 	if !r1.Exists() {
 		t.Fatalf("r1.Exists() is false, expected true")
 	}
-	if r1.Type != jsonsearcher.TypeString {
+	if r1.Type() != jsonsearcher.TypeString {
 		t.Fatalf("r1.Type is not TypeString, expected TypeString")
 	}
 	if r1.GetString() != "Markity" {
@@ -58,7 +58,7 @@ func TestB(t *testing.T) {
 	if !r2.Exists() {
 		t.Fatalf("r2.Exists() is false, expected true")
 	}
-	if r2.Type != jsonsearcher.TypeNumber {
+	if r2.Type() != jsonsearcher.TypeNumber {
 		t.Fatalf("r2.Type is not TypeNumber, expected TypeNumber")
 	}
 	if r2.GetInt64() != 16 {
@@ -69,7 +69,7 @@ func TestB(t *testing.T) {
 	if !r3.Exists() {
 		t.Fatalf("r3.Exists() is false, expected true")
 	}
-	if r3.Type != jsonsearcher.TypeArray {
+	if r3.Type() != jsonsearcher.TypeArray {
 		t.Fatalf("r3.Type is not TypeArray, expected TypeArray")
 	}
 	if fmt.Sprintf("%v", r3.GetArray()) != "[map[age:17 name:Jack] map[age:18 email:3402002560@qq.com name:Mary]]" {
@@ -80,7 +80,7 @@ func TestB(t *testing.T) {
 	if !r4.Exists() {
 		t.Fatalf("r4.Exists() is false, expected true")
 	}
-	if r4.Type != jsonsearcher.TypeObject {
+	if r4.Type() != jsonsearcher.TypeObject {
 		t.Fatalf("r4.Type is not TypeObject, expected TypeObject")
 	}
 	if fmt.Sprintf("%v", r4.GetObject()) != "map[age:17 name:Jack]" {
@@ -91,7 +91,7 @@ func TestB(t *testing.T) {
 	if !r5.Exists() {
 		t.Fatalf("r5.Exists() is false, expected true")
 	}
-	if r5.Type != jsonsearcher.TypeString {
+	if r5.Type() != jsonsearcher.TypeString {
 		t.Fatalf("r5.Type is not TypeString, expected TypeString")
 	}
 	if r5.GetString() != "Jack" {
@@ -102,7 +102,7 @@ func TestB(t *testing.T) {
 	if !r6.Exists() {
 		t.Fatalf("r6.Exists() is false, expected true")
 	}
-	if r6.Type != jsonsearcher.TypeNumber {
+	if r6.Type() != jsonsearcher.TypeNumber {
 		t.Fatalf("r6.Type is not TypeNumber, expected TypeNumber")
 	}
 	if r6.GetInt64() != 17 {
@@ -113,7 +113,7 @@ func TestB(t *testing.T) {
 	if !r7.Exists() {
 		t.Fatalf("r7.Exists() is false, expected true")
 	}
-	if r7.Type != jsonsearcher.TypeString {
+	if r7.Type() != jsonsearcher.TypeString {
 		t.Fatalf("r7.Type is not TypeString, expected TypeString")
 	}
 	if r7.GetString() != "Mary" {
@@ -124,7 +124,7 @@ func TestB(t *testing.T) {
 	if !r8.Exists() {
 		t.Fatalf("r8.Exists() is false, expected true")
 	}
-	if r8.Type != jsonsearcher.TypeNumber {
+	if r8.Type() != jsonsearcher.TypeNumber {
 		t.Fatalf("r8.Type is not TypeNumber, expected TypeNumber")
 	}
 	if r8.GetInt64() != 18 {
@@ -135,7 +135,7 @@ func TestB(t *testing.T) {
 	if !r9.Exists() {
 		t.Fatalf("r9.Exists() is false, expected true")
 	}
-	if r9.Type != jsonsearcher.TypeString {
+	if r9.Type() != jsonsearcher.TypeString {
 		t.Fatalf("r9.Type is not TypeString, expected TypeString")
 	}
 	if r9.GetString() != "3402002560@qq.com" {
@@ -146,7 +146,7 @@ func TestB(t *testing.T) {
 	if !r10.Exists() {
 		t.Fatalf("r10.Exists() is false, expected true")
 	}
-	if r10.Type != jsonsearcher.TypeObject {
+	if r10.Type() != jsonsearcher.TypeObject {
 		t.Fatalf("r10.Type is not TypeObject, expected TypeObject")
 	}
 	if fmt.Sprintf("%v", r10.GetObject()) != "map[interests:[golang python]]" {
@@ -157,7 +157,7 @@ func TestB(t *testing.T) {
 	if !r11.Exists() {
 		t.Fatalf("r11.Exists() is false, expected true")
 	}
-	if r11.Type != jsonsearcher.TypeArray {
+	if r11.Type() != jsonsearcher.TypeArray {
 		t.Fatalf("r11.Type is not TypeArray, expected TypeArray")
 	}
 	if fmt.Sprintf("%v", r11.GetArray()) != "[golang python]" {
@@ -168,7 +168,7 @@ func TestB(t *testing.T) {
 	if !r12.Exists() {
 		t.Fatalf("r12.Exists() is false, expected true")
 	}
-	if r12.Type != jsonsearcher.TypeString {
+	if r12.Type() != jsonsearcher.TypeString {
 		t.Fatalf("r12.Type is not TypeString, expected TypeString")
 	}
 	if r12.GetString() != "golang" {
@@ -179,7 +179,7 @@ func TestB(t *testing.T) {
 	if !r13.Exists() {
 		t.Fatalf("r13.Exists() is false, expected true")
 	}
-	if r13.Type != jsonsearcher.TypeString {
+	if r13.Type() != jsonsearcher.TypeString {
 		t.Fatalf("r13.Type is not TypeString, expected TypeString")
 	}
 	if r13.GetString() != "python" {

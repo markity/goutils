@@ -86,17 +86,17 @@ func (s *Searcher) Query(args ...interface{}) *Result {
 	result.exists = true
 	switch v.(type) {
 	case float64:
-		result.Type = TypeNumber
+		result.resType = TypeNumber
 	case bool:
-		result.Type = TypeBool
+		result.resType = TypeBool
 	case string:
-		result.Type = TypeString
+		result.resType = TypeString
 	case []interface{}:
-		result.Type = TypeArray
+		result.resType = TypeArray
 	case map[string]interface{}:
-		result.Type = TypeObject
+		result.resType = TypeObject
 	case nil:
-		result.Type = TypeNull
+		result.resType = TypeNull
 	}
 	result.value = v
 
@@ -104,9 +104,13 @@ func (s *Searcher) Query(args ...interface{}) *Result {
 }
 
 type Result struct {
-	Type   resultType
-	exists bool
-	value  interface{}
+	resType resultType
+	exists  bool
+	value   interface{}
+}
+
+func (r *Result) Type() resultType {
+	return r.resType
 }
 
 func (r *Result) Exists() bool {
@@ -118,49 +122,49 @@ func (r *Result) GetValue() interface{} {
 }
 
 func (r *Result) GetInt64() int64 {
-	if r.Type != TypeNumber {
+	if r.Type() != TypeNumber {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return int64(r.value.(float64))
 }
 
 func (r *Result) GetUint64() uint64 {
-	if r.Type != TypeNumber {
+	if r.Type() != TypeNumber {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return uint64(r.value.(float64))
 }
 
 func (r *Result) GetFloat64() float64 {
-	if r.Type != TypeNumber {
+	if r.Type() != TypeNumber {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return r.value.(float64)
 }
 
 func (r *Result) GetBool() bool {
-	if r.Type != TypeBool {
+	if r.Type() != TypeBool {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return r.value.(bool)
 }
 
 func (r *Result) GetString() string {
-	if r.Type != TypeString {
+	if r.Type() != TypeString {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return r.value.(string)
 }
 
 func (r *Result) GetObject() map[string]interface{} {
-	if r.Type != TypeObject {
+	if r.Type() != TypeObject {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return r.value.(map[string]interface{})
 }
 
 func (r *Result) GetArray() []interface{} {
-	if r.Type != TypeArray {
+	if r.Type() != TypeArray {
 		panic(errors.New("mistaken type of the result"))
 	}
 	return r.value.([]interface{})
