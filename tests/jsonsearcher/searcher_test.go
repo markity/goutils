@@ -24,7 +24,8 @@ var jsonString = `
 	],
 	"details":{
 		"interests":["golang","python"]
-	}
+	},
+	"phone":null
 }
 `
 
@@ -35,6 +36,10 @@ func TestA(t *testing.T) {
 	}
 	_, err = jsonsearcher.New([]byte(jsonString + "}"))
 	if err == nil {
+		t.Fatalf("err is nil, expected not nil")
+	}
+	_, err = jsonsearcher.New([]byte("null"))
+	if err != nil {
 		t.Fatalf("err is nil, expected not nil")
 	}
 }
@@ -186,23 +191,64 @@ func TestB(t *testing.T) {
 		t.Fatalf("r13.GetString() is %v, expected python", r13.GetString())
 	}
 
+	r14 := s.Query("phone")
+	if !r14.Exists() {
+		t.Fatalf("r14.Exists() is false, expected true")
+	}
+	if r14.Type() != jsonsearcher.TypeNull {
+		t.Fatalf("r14.Type is not TypeNull, expected TypeNull")
+	}
+
+	r15 := s.Query()
+	if !r15.Exists() {
+		t.Fatalf("r15.Exists() is false, expected true")
+	}
+	if r15.Type() != jsonsearcher.TypeObject {
+		t.Fatalf("r15.Type is not TypeObject, expected TypeObject")
+	}
+
 	// not exists
+	if s.Query("undefined").Exists() {
+		t.Fatalf("the value exists, expected not exist")
+	}
 	if s.Query(0).Exists() {
-		t.Fatalf("the value is true, expected false")
+		t.Fatalf("the value exists, expected not exist")
 	}
 	if s.Query(-1).Exists() {
-		t.Fatalf("the value is true, expected false")
+		t.Fatalf("the value exists, expected not exist")
 	}
 	if s.Query("undef").Exists() {
-		t.Fatalf("the value is true, expected false")
+		t.Fatalf("the value exists, expected not exist")
 	}
 	if s.Query("friends", -1).Exists() {
-		t.Fatalf("the value is true, expected false")
+		t.Fatalf("the value exists, expected not exist")
 	}
 	if s.Query("friends", 2).Exists() {
-		t.Fatalf("the value is true, expected false")
+		t.Fatalf("the value exists, expected not exist")
 	}
 	if s.Query("friends", 0, "email").Exists() {
-		t.Fatalf("the value is true, expected false")
+		t.Fatalf("the value exists, expected not exist")
+	}
+	if s.Query("phone", 0).Exists() {
+		t.Fatalf("the value exists, expected not exist")
+	}
+	if s.Query("phone", "undefined").Exists() {
+		t.Fatalf("the value exists, expected not exist")
+	}
+}
+
+func TestC(t *testing.T) {
+	s, _ := jsonsearcher.New([]byte("null"))
+	if !s.Query().Exists() {
+		t.Fatalf("the value does not exist, expected exist")
+	}
+	if s.Query().Type() != jsonsearcher.TypeObject {
+		t.Fatalf("the value type is not TypeObject, expected TypeObject")
+	}
+	if s.Query(0).Exists() {
+		t.Fatalf("the value exists, expected not exist")
+	}
+	if s.Query("undefined").Exists() {
+		t.Fatalf("the value exists, expected not exist")
 	}
 }

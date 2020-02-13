@@ -9,12 +9,12 @@ import (
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 // New a json searcher. Return error when the json data is invalid
-func New(data []byte) (*Searcher, error) {
+func New(data []byte) (*searcher, error) {
 	obj := make(map[string]interface{})
 	if err := json.Unmarshal(data, &obj); err != nil {
 		return nil, err
 	}
-	return &Searcher{obj: obj}, nil
+	return &searcher{obj: obj}, nil
 }
 
 // ResultType is the type of json field
@@ -32,6 +32,9 @@ const (
 
 func (rt resultType) String() string {
 	switch rt {
+	// The filed is undefined
+	case resultType(0):
+		return "UndefinedType"
 	case TypeNumber:
 		return "NumberType"
 	case TypeBool:
@@ -44,17 +47,18 @@ func (rt resultType) String() string {
 		return "ObjectType"
 	case TypeNull:
 		return "NullType"
+	// Unaccessable
 	default:
 		return "InvalidType"
 	}
 }
 
-type Searcher struct {
+type searcher struct {
 	obj map[string]interface{}
 }
 
 // Query specific json field. Args' type must be int or string(if not, the function will panic)
-func (s *Searcher) Query(args ...interface{}) *Result {
+func (s *searcher) Query(args ...interface{}) *Result {
 	result := &Result{}
 
 	v := interface{}(s.obj)
